@@ -1,11 +1,11 @@
-import { NavLink, useLoaderData, useNavigate } from "react-router";
+import { NavLink, useRouteLoaderData, useNavigate } from "react-router";
 import type { Product } from "../types/product";
 import Card from "../components/Card";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
     const toShop= useNavigate();
-    const data = useLoaderData<Product[]>();
+    const data = useRouteLoaderData("Main") as Product[];
     const featuredArrivals = Object.values(
         data.reduce<Record<string, Product>>((acc, product) => {
             if (Object.keys(acc).length === 4) return acc;
