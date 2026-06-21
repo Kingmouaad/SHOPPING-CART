@@ -19,13 +19,29 @@ export default function Home() {
 
     return (
         <>
-        <section className="bg-[url('/hero.jpg')] bg-contain bg-no-repeat bg-center h-screen flex flex-col justify-center items-center text-center">
-            <div className="flex flex-col gap-5 mb-5">
-                <h1 className="text-5xl font-bold tracking-widest">NEW COLLECTION</h1>
-                <p className="text-xl tracking-wider">Discover the latest trends in fashion</p>
+        <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0">
+                <img 
+                    src="/home-hero.png" 
+                    alt="New Collection" 
+                    className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-black/20"></div>
             </div>
-            <div className="flex flex-col gap-5">
-                <button className="bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer">Shop Now</button>
+
+            {/* Content */}
+            <div className="relative z-10 flex flex-col gap-6 mb-10 text-white px-6 mt-16">
+                <h1 className="text-6xl md:text-8xl font-serif tracking-widest drop-shadow-lg">NEW COLLECTION</h1>
+                <p className="text-lg md:text-xl tracking-[0.2em] font-medium drop-shadow-md uppercase">Discover the latest trends in fashion</p>
+            </div>
+            <div className="relative z-10 flex flex-col gap-5">
+                <button 
+                    onClick={() => toShop("/shop")}
+                    className="bg-white text-black px-12 py-5 text-[11px] font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer shadow-xl"
+                >
+                    Shop Now
+                </button>
             </div>
         </section>
 
