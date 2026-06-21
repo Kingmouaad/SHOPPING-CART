@@ -7,12 +7,19 @@ import { context } from "../main";
 export default function ProductPage() {
     const { name } = useParams();
     const data = useRouteLoaderData("Main") as Product[];
-    
-    // Find the product (using name param as ID)
     const product = data?.find(p => p.id.toString() === name);
-    
     const [selectedImage, setSelectedImage] = useState<string>("");
-
+    const [Like, setLike] = useState<boolean>(false);
+    const [selectedSize, setSelectedSize] = useState<string>("M");
+    const [hasSelectedSize, setHasSelectedSize] = useState<boolean>(false);
+    
+    const colors = [
+        { name: 'Camel', hex: '#c19a6b' },
+        { name: 'Navy', hex: '#2c3e50' },
+        { name: 'Black', hex: '#1a1a1a' }
+    ];
+    const [selectedColor, setSelectedColor] = useState(colors[0]);
+    const [hasSelectedColor, setHasSelectedColor] = useState<boolean>(false);
     useEffect(() => {
         if (product && product.images && product.images.length > 0) {
             setSelectedImage(product.images[0]);
@@ -25,12 +32,12 @@ export default function ProductPage() {
         return <div className="h-screen flex items-center justify-center font-serif text-2xl text-gray-500">Product not found</div>;
     }
 
-    // Suggested products from different categories
+    
     const suggestedProducts = data?.filter(p => p.category !== product.category).slice(0, 4) || [];
 
     const addToBag = () => {
         if (setCart) {
-            setCart([...cart, product]);
+            setCart([...cart, { product: product, size: selectedSize, color: selectedColor}]);
         }
     };
 
@@ -93,12 +100,24 @@ export default function ProductPage() {
                         <div className="mb-8 border-t border-b border-gray-100 py-6">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-[11px] font-bold tracking-widest uppercase">Color</span>
-                                <span className="text-[11px] text-gray-500 capitalize">Camel</span>
+                                <span className="text-[11px] text-gray-500 capitalize">{selectedColor.name}</span>
                             </div>
                             <div className="flex gap-3">
-                                <button className="w-8 h-8 rounded-md bg-[#c19a6b] ring-1 ring-offset-2 ring-black cursor-pointer"></button>
-                                <button className="w-8 h-8 rounded-md bg-[#2c3e50] opacity-50 hover:opacity-100 cursor-pointer"></button>
-                                <button className="w-8 h-8 rounded-md bg-[#1a1a1a] opacity-50 hover:opacity-100 cursor-pointer"></button>
+                                {colors.map(color => (
+                                    <button 
+                                        key={color.name}
+                                        onClick={() => {
+                                            setSelectedColor(color);
+                                            setHasSelectedColor(true);
+                                        }}
+                                        className={`w-8 h-8 rounded-md cursor-pointer transition-all duration-300 ${
+                                            selectedColor.name === color.name 
+                                                ? 'ring-1 ring-offset-2 ring-black opacity-100' 
+                                                : `hover:opacity-100 ${hasSelectedColor ? 'opacity-50' : 'opacity-50'}`
+                                        }`}
+                                        style={{ backgroundColor: color.hex }}
+                                    ></button>
+                                ))}
                             </div>
                         </div>
 
@@ -109,7 +128,17 @@ export default function ProductPage() {
                             </div>
                             <div className="grid grid-cols-4 gap-2">
                                 {['S', 'M', 'L', 'XL'].map(size => (
-                                    <button key={size} className={`border border-gray-200 py-3 text-[11px] font-bold tracking-widest cursor-pointer transition-colors ${size === 'M' ? 'border-black text-black' : 'text-gray-400 hover:border-black hover:text-black'}`}>
+                                    <button 
+                                        key={size} 
+                                        onClick={() => {
+                                            setSelectedSize(size);
+                                            setHasSelectedSize(true);
+                                        }}
+                                        className={`border py-3 text-[11px] font-bold tracking-widest cursor-pointer transition-all duration-300 ${
+                                            selectedSize === size 
+                                                ? 'border-black text-black opacity-100' 
+                                                : `border-gray-200 text-gray-400 hover:border-black hover:text-black ${hasSelectedSize ? 'opacity-50' : 'opacity-100'}`
+                                        }`}>
                                         {size}
                                     </button>
                                 ))}
@@ -122,9 +151,9 @@ export default function ProductPage() {
                             Add to Bag — ${product.price}
                         </button>
                         
-                        <button className="w-full border border-gray-200 py-4 text-[11px] font-bold tracking-widest uppercase text-gray-600 hover:border-black hover:text-black transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                            Save to Wishlist
+                        <button onClick={() => setLike(!Like)} className="w-full border border-gray-200 py-4 text-[11px] font-bold tracking-widest uppercase text-gray-600 hover:border-black hover:text-black transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                            <svg className="w-4 h-4" fill={Like ? "red" : "none"} stroke={Like ? "red" : "currentColor"} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                            {Like ? "Wishlisted" : "Save to Wishlist"}
                         </button>
                     </div>
                 </div>

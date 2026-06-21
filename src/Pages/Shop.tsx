@@ -21,7 +21,15 @@ export default function Shop() {
     }
 
     const numofproducts = filteredProducts.length;
-
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchValue = e.target.value.toLowerCase();
+        if(searchValue === ""){
+            setFilteredProducts(data.filter(product => product.title.toLowerCase().includes(searchValue)));
+        }else{
+            setFilteredProducts(filteredProducts.filter(product => product.title.toLowerCase().includes(searchValue)));
+        }
+        
+    }
     return (
         <div className="px-15 py-20">
             {/* Header Section */}
@@ -34,6 +42,7 @@ export default function Shop() {
                     categories={categories} 
                     activeCategory={activeCategory} 
                     onSelectCategory={filteringCategories} 
+                    onSearch={onSearch}
                 />
             </div>
 
@@ -47,10 +56,7 @@ export default function Shop() {
             {/* Pagination Placeholder */}
             <div className="flex justify-center gap-2 mt-15">
                 <button className="w-10 h-10 border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">1</button>
-                <button className="w-10 h-10 border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">2</button>
-                <button className="w-10 h-10 border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">3</button>
-                <span className="w-10 h-10 flex items-center justify-center">...</span>
-                <button className="w-10 h-10 border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">12</button>
+               
             </div>
         </div>
     );
