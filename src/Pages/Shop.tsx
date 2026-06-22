@@ -1,4 +1,4 @@
-import { NavLink, useRouteLoaderData } from "react-router";
+import { useRouteLoaderData } from "react-router";
 import type { Product } from "../types/product";
 import Card from "../components/Card";
 import { useState } from "react";
