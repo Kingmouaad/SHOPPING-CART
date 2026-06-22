@@ -89,6 +89,7 @@ export default function Cart() {
                 <div className="flex flex-col gap-10">
                     {cart.map((item: any, idx: number) => {
                         const product = item.product || item;
+                        const price2 = product.price*quantities[idx];
                         return (
                             <div key={idx} className="flex gap-8 pb-10 border-b border-gray-100">
                                 <div className="w-36 bg-[#f6f6f6] flex items-center justify-center p-2">
@@ -97,7 +98,7 @@ export default function Cart() {
                                 <div className="flex-1 flex flex-col py-2">
                                     <div className="flex justify-between items-start mb-2">
                                         <h3 className="font-serif text-xl text-gray-900">{product.title}</h3>
-                                        <span className="text-sm font-bold text-gray-900">${product.price}</span>
+                                        <span className="text-sm font-bold text-gray-900">${price2}</span>
                                     </div>
                                     <div className="text-[13px] text-gray-500 space-y-1 mb-auto">
                                         <p>Color: <span className="capitalize">{item.color?.name || 'Default'}</span></p>

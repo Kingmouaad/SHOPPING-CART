@@ -27,7 +27,7 @@ export default function Card({ product, display }: { product: Product, display: 
             </div>
             <div className="flex justify-between items-center ">
                 <p className="text-2xl font-italic tracking-wider">${product.price}</p>
-            {display  && <button className="bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer" onClick={()=>{
+            {display  && <button className="bg-gradient-to-r from-gray-900 to-black text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all duration-300 font-medium tracking-wider text-sm cursor-pointer" onClick={()=>{
                 addtobag();
             }}>Add to Cart</button>
             }
